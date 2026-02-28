@@ -1,22 +1,21 @@
 PKG_NAME:=github.com/sapcc/mosquitto-exporter
 BUILD_DIR:=bin
 MOSQUITTO_EXPORTER_BINARY:=$(BUILD_DIR)/mosquitto_exporter
-IMAGE := sapcc/mosquitto-exporter
-VERSION=0.8.0
+IMAGE := registry.muir.syn-packet.com/synpacket/mosquitto-exporter
+VERSION=1.0.0
 LDFLAGS=-s -w -X main.Version=$(VERSION) -X main.GITCOMMIT=`git rev-parse --short HEAD`
 .PHONY: help
 help:
 	@echo
 	@echo "Available targets:"
-	@echo "  * build             - build the binary, output to $(ARC_BINARY)"
-	@echo "  * linux             - build the binary, output to $(ARC_BINARY)"
+	@echo "  * build             - build the binary, output to $(MOSQUITTO_EXPORTER_BINARY)"
 	@echo "  * docker            - build docker image"
 
 .PHONY: build
 build: export CGO_ENABLED=0
 build:
 	@mkdir -p $(BUILD_DIR)
-	go build -o $(MOSQUITTO_EXPORTER_BINARY) -ldflags="$(LDFLAGS)" $(PKG_NAME)
+	go build -o $(MOSQUITTO_EXPORTER_BINARY) -ldflags="$(LDFLAGS)" .
 
 linux: export GOOS=linux
 linux: build
